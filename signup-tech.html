@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>FutriFix — Technician Signup</title>
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+  <header class="topnav">
+    <div class="brand">FutriFix</div>
+    <nav class="navlinks">
+      <a href="index.html">Discover</a>
+      <a href="client-post.html">Post Job</a>
+      <a href="signup-tech.html" class="active">Signup Technician</a>
+      <a href="dashboard.html">Dashboard</a>
+    </nav>
+  </header>
+
+  <main class="single-column container-sm">
+    <h1>Technician Signup</h1>
+    <form id="techForm" class="form-card" autocomplete="off">
+      <label>Full name<input name="fullname" required/></label>
+      <label>PIN code<input name="pin" inputmode="numeric" required/></label>
+      <label>Skills (comma separated)<input name="skills" required/></label>
+      <div class="form-row">
+        <label>Experience (years)<input name="experience" type="number" min="0" required/></label>
+        <label>Starting price<input name="price" type="number" required/></label>
+      </div>
+      <label>Short bio<textarea name="bio" rows="3"></textarea></label>
+      <div class="form-actions">
+        <button class="btn" type="submit">Create Profile</button>
+      </div>
+    </form>
+    <div id="signupResult" class="card small muted" aria-live="polite"></div>
+  </main>
+
+  <script type="module" src="js/main.js"></script>
+</body>
+</html>
