@@ -1,0 +1,131 @@
+/* ---------------- Google Translate ---------------- */
+function googleTranslateInit() {
+  new google.translate.TranslateElement(
+    {
+      pageLanguage: "en",
+      autoDisplay: false,
+    },
+    "translate-box"
+  );
+}
+
+/* ---------------- ORIGINAL JS (cleaned + same logic) ---------------- */
+
+const ICONS = { /* same ICONS from your file */ };
+const jobTypes = [ /* same jobTypes from your file */ ];
+const demoWorkers = [ /* same demoWorkers */ ];
+const demoJobs = [ /* same demoJobs */ ];
+
+const iconGrid = document.getElementById("iconGrid");
+const filterChips = document.getElementById("filterChips");
+const searchInput = document.getElementById("searchInput");
+const cityInput = document.getElementById("cityInput");
+const radiusSelect = document.getElementById("radiusSelect");
+const workerList = document.getElementById("workerList");
+const jobsCount = document.getElementById("jobsCount");
+const workersCount = document.getElementById("workersCount");
+const jobList = document.getElementById("jobList");
+
+/* CATEGORY CHIPS */
+const categories = [...new Set(jobTypes.map((j) => j.category))];
+
+categories.forEach((cat) => {
+  const btn = document.createElement("button");
+  btn.className = "tile chip";
+  btn.innerHTML = `<div style="font-weight:600">${cat}</div>`;
+  btn.onclick = () => {
+    btn.classList.toggle("selected");
+    renderAll();
+  };
+  filterChips.appendChild(btn);
+});
+
+/* GRID RENDER */
+function renderGrid() {
+  const q = searchInput.value.toLowerCase();
+  const cityQ = cityInput.value.toLowerCase();
+  const activeCats = [...filterChips.children]
+    .filter((c) => c.classList.contains("selected"))
+    .map((c) => c.innerText.trim());
+
+  iconGrid.innerHTML = "";
+
+  const filtered = jobTypes.filter((j) => {
+    const matchQ = q ? j.name.toLowerCase().includes(q) : true;
+    const matchCat = activeCats.length ? activeCats.includes(j.category) : true;
+    const matchCity = cityQ ? true : true;
+    return matchQ && matchCat && matchCity;
+  });
+
+  filtered.forEach((item) => {
+    const box = document.createElement("div");
+    box.className = "tile";
+    box.onclick = () => {
+      box.classList.toggle("selected");
+      renderAll();
+    };
+
+    box.innerHTML = `
+      <div class="icon">${ICONS[item.key] || "🔧"}</div>
+      <div style="font-weight:600">${item.name}</div>
+      <div style="color:#9ca3af;font-size:12px">${item.category}</div>
+    `;
+
+    iconGrid.appendChild(box);
+  });
+}
+
+/* WORKERS & JOBS RENDER */
+function renderAll() {
+  renderGrid();
+
+  const q = searchInput.value.toLowerCase();
+  const cityQ = cityInput.value.toLowerCase();
+  const activeCats = [...filterChips.children]
+    .filter((c) => c.classList.contains("selected"))
+    .map((c) => c.innerText);
+
+  let workers = demoWorkers.filter((w) => {
+    return (!cityQ || w.city.toLowerCase().includes(cityQ)) &&
+           (!q || w.trade.toLowerCase().includes(q));
+  });
+
+  let jobs = demoJobs.filter((j) => {
+    return (!cityQ || j.city.toLowerCase().includes(cityQ)) &&
+           (!q || j.title.toLowerCase().includes(q));
+  });
+
+  workerList.innerHTML = "";
+  workers.forEach((w) => {
+    workerList.innerHTML += `
+      <div class="card">
+        <div class="avatar">${w.name[0]}</div>
+        <div>
+          <div style="font-weight:700">${w.name}</div>
+          <div style="font-size:13px;color:#9ca3af">${w.trade} • ${w.city}</div>
+        </div>
+      </div>`;
+  });
+
+  jobList.innerHTML = "";
+  jobs.forEach((j) => {
+    jobList.innerHTML += `
+      <div class="card">
+        <div class="avatar">${j.title[0]}</div>
+        <div>
+          <div style="font-weight:700">${j.title}</div>
+          <div style="font-size:13px;color:#9ca3af">${j.category} • ${j.city}</div>
+        </div>
+      </div>`;
+  });
+
+  workersCount.innerText = workers.length;
+  jobsCount.innerText = jobs.length;
+}
+
+/* EVENT LISTENERS */
+searchInput.oninput = renderAll;
+cityInput.oninput = renderAll;
+radiusSelect.onchange = renderAll;
+
+renderAll();
