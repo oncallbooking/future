@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Payment — LabourConnect</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">LabourConnect</div>
+    <nav class="nav">
+      <a href="index.html" class="navlink">Home</a>
+      <a href="dashboard.html" class="navlink">Dashboard</a>
+    </nav>
+  </header>
+
+  <main class="container">
+    <div class="box" style="max-width:720px; margin:0 auto;">
+      <h2>Subscribe to LabourConnect Pro</h2>
+      <p class="section-sub">Demo payment page. Click "Complete Payment" to simulate successful subscription.</p>
+
+      <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-top:12px">
+        <div class="card" style="padding:12px;">
+          <div style="font-weight:700;">Monthly</div>
+          <div style="margin-top:6px; font-size:24px; color:var(--accent)">₹499</div>
+          <div style="color:var(--muted); margin-top:8px">Billed monthly. Cancel anytime.</div>
+        </div>
+        <div class="card" style="padding:12px;">
+          <div style="font-weight:700;">Yearly</div>
+          <div style="margin-top:6px; font-size:24px; color:var(--accent)">₹4,999</div>
+          <div style="color:var(--muted); margin-top:8px">Save 15% vs monthly.</div>
+        </div>
+      </div>
+
+      <form id="paymentForm" style="margin-top:16px;">
+        <label>Cardholder name<input placeholder="Name on card" required /></label>
+        <label>Card number<input placeholder="4242 4242 4242 4242" required /></label>
+        <div style="display:flex; gap:8px;">
+          <input placeholder="MM/YY" required />
+          <input placeholder="CVC" required />
+        </div>
+
+        <div style="display:flex; gap:8px; justify-content:flex-end; margin-top:12px;">
+          <a href="dashboard.html" class="btn ghost">Back</a>
+          <button class="btn" id="completePayment" type="button">Complete Payment</button>
+        </div>
+      </form>
+
+      <div id="paymentSuccess" class="hidden" style="margin-top:12px; padding:12px; border-radius:8px; background:linear-gradient(180deg, rgba(14,165,233,0.08), rgba(14,165,233,0.03));">
+        <strong>Payment simulated.</strong> You are now a Pro user (demo).
+      </div>
+    </div>
+  </main>
+
+  <footer class="site-footer">LabourConnect demo</footer>
+
+  <script src="styles.css"></script>
+  <script>
+    document.getElementById('completePayment').addEventListener('click', () => {
+      document.getElementById('paymentSuccess').classList.remove('hidden');
+      // in a real app you might redirect to dashboard & set subscription flags
+      setTimeout(() => window.location = 'dashboard.html', 1200);
+    });
+  </script>
+</body>
+</html>
