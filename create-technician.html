@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Create Technician Profile — LabourConnect</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">LabourConnect</div>
+    <nav class="nav">
+      <a href="index.html" class="navlink">Home</a>
+      <a href="categories.html" class="navlink">Categories</a>
+      <a href="workers.html" class="navlink">Workers</a>
+      <a href="jobs.html" class="navlink">Jobs</a>
+      <a href="dashboard.html" class="navlink active">Dashboard</a>
+    </nav>
+  </header>
+
+  <main class="container">
+    <div class="box">
+      <h2>Create Technician Profile</h2>
+      <p class="section-sub">Technicians can create a profile to show up in search & dashboard.</p>
+
+      <form id="createTechForm" class="form-grid">
+        <label>Name
+          <input id="techName" placeholder="Full name" required />
+        </label>
+
+        <label>Trade (short)
+          <input id="techTrade" placeholder="e.g. Electrician" required />
+        </label>
+
+        <label>Category
+          <select id="techCategory" required></select>
+        </label>
+
+        <label>City
+          <input id="techCity" placeholder="City" required />
+        </label>
+
+        <label>Years Experience
+          <input id="techExp" type="number" min="0" value="1" />
+        </label>
+
+        <label>Price per day (₹)
+          <input id="techPrice" type="number" placeholder="e.g. 1200" />
+        </label>
+
+        <label>Days Available
+          <input id="techDays" placeholder="e.g. Mon-Fri" />
+        </label>
+
+        <label>Hours
+          <input id="techHours" placeholder="e.g. 9am-6pm" />
+        </label>
+
+        <label>Phone
+          <input id="techPhone" placeholder="Phone number" required />
+        </label>
+
+        <label style="grid-column:1/-1">Short bio
+          <textarea id="techBio" rows="4" placeholder="Brief profile / certifications"></textarea>
+        </label>
+
+        <div style="grid-column:1/-1; display:flex; gap:10px; justify-content:flex-end;">
+          <button type="button" class="btn ghost" id="cancelTech">Cancel</button>
+          <button type="submit" class="btn">Create Profile</button>
+        </div>
+      </form>
+    </div>
+  </main>
+
+  <footer class="site-footer">LabourConnect demo</footer>
+
+  <script src="icons.svg" type="image/svg+xml"></script>
+  <script src="data.js"></script>
+  <script src="app.js"></script>
+  <script>
+    // populate categories
+    categories.forEach(c => {
+      const opt = document.createElement('option');
+      opt.value = c.name; opt.textContent = `${c.name} — ${c.category}`;
+      document.getElementById('techCategory').appendChild(opt);
+    });
+
+    document.getElementById('cancelTech').addEventListener('click', () => window.location = 'workers.html');
+
+    document.getElementById('createTechForm').addEventListener('submit', (e) => {
+      e.preventDefault();
+      const tech = {
+        id: Date.now(),
+        name: document.getElementById('techName').value.trim(),
+        trade: document.getElementById('techTrade').value.trim(),
+        category: document.getElementById('techCategory').value,
+        city: document.getElementById('techCity').value.trim(),
+        experience: Number(document.getElementById('techExp').value) || 0,
+        pricePerDay: Number(document.getElementById('techPrice').value) || 0,
+        daysAvailable: document.getElementById('techDays').value.trim(),
+        hours: document.getElementById('techHours').value.trim(),
+        phone: document.getElementById('techPhone').value.trim(),
+        bio: document.getElementById('techBio').value.trim(),
+        completed: 0
+      };
+      addWorker(tech);
+      window.location = 'workers.html';
+    });
+  </script>
+</body>
+</html>
