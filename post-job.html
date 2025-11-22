@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Post a Job — LabourConnect</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">LabourConnect</div>
+    <nav class="nav">
+      <a href="index.html" class="navlink">Home</a>
+      <a href="categories.html" class="navlink">Categories</a>
+      <a href="workers.html" class="navlink">Workers</a>
+      <a href="jobs.html" class="navlink">Jobs</a>
+      <a href="dashboard.html" class="navlink active">Dashboard</a>
+    </nav>
+  </header>
+
+  <main class="container">
+    <div class="box">
+      <h2>Post a Job</h2>
+      <p class="section-sub">Enter the job details below — job posts are saved locally (demo)</p>
+
+      <form id="postJobForm" class="form-grid">
+        <label>Job Title
+          <input id="jobTitle" required placeholder="e.g. Replace kitchen tiles" />
+        </label>
+
+        <label>Category
+          <select id="jobCategory" required></select>
+        </label>
+
+        <label>City
+          <input id="jobCity" required placeholder="e.g. Mumbai" />
+        </label>
+
+        <label>Budget (₹)
+          <input id="jobBudget" type="number" required placeholder="e.g. 5000" />
+        </label>
+
+        <label>Days Required
+          <input id="jobDays" placeholder="e.g. 1-2 days" />
+        </label>
+
+        <label>Hours Required
+          <input id="jobHours" placeholder="e.g. 4-8 hours/day" />
+        </label>
+
+        <label>Contact Name
+          <input id="jobContact" required placeholder="Your name" />
+        </label>
+
+        <label>Contact Phone
+          <input id="jobPhone" required placeholder="Phone number" />
+        </label>
+
+        <label style="grid-column:1/-1">Description
+          <textarea id="jobDescription" rows="5" placeholder="Describe the work..."></textarea>
+        </label>
+
+        <div style="grid-column:1/-1; display:flex; gap:10px; justify-content:flex-end;">
+          <button type="button" class="btn ghost" id="cancelJob">Cancel</button>
+          <button type="submit" class="btn">Post Job</button>
+        </div>
+      </form>
+    </div>
+  </main>
+
+  <footer class="site-footer">LabourConnect demo</footer>
+
+  <script src="icons.svg" type="image/svg+xml"></script>
+  <script src="data.js"></script>
+  <script src="app.js"></script>
+  <script>
+    // populate category list
+    const catSelect = document.getElementById('jobCategory');
+    categories.forEach(c => {
+      const opt = document.createElement('option');
+      opt.value = c.name; opt.textContent = `${c.name} — ${c.category}`;
+      catSelect.appendChild(opt);
+    });
+
+    document.getElementById('cancelJob').addEventListener('click', () => window.location = 'jobs.html');
+
+    document.getElementById('postJobForm').addEventListener('submit', (e) => {
+      e.preventDefault();
+      const job = {
+        id: Date.now(),
+        title: document.getElementById('jobTitle').value.trim(),
+        category: document.getElementById('jobCategory').value,
+        city: document.getElementById('jobCity').value.trim(),
+        budget: Number(document.getElementById('jobBudget').value) || 0,
+        daysRequired: document.getElementById('jobDays').value || 'N/A',
+        hoursRequired: document.getElementById('jobHours').value || 'N/A',
+        description: document.getElementById('jobDescription').value.trim(),
+        contactName: document.getElementById('jobContact').value.trim(),
+        contactPhone: document.getElementById('jobPhone').value.trim()
+      };
+      addJob(job); // app.js -> persists and updates demoJobs
+      // redirect to jobs listing
+      window.location = 'jobs.html';
+    });
+  </script>
+</body>
+</html>
