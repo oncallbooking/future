@@ -3,97 +3,24 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>LabourConnect — Demo (Thumbtack-style UI)</title>
+  <title>LabourConnect — Demo Directory & Dashboard</title>
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-  <header class="hero" role="banner" aria-label="LabourConnect hero">
-    <div class="hero-inner">
-      <div class="hero-text">
-        <h1>Find Skilled Workers for Any Job</h1>
-        <p>Browse categories, filter by city and radius, view available workers or posted jobs. Demo mode.</p>
-        <div class="hero-ctas">
-          <button class="btn primary" id="findWorkersBtn">Find Workers</button>
-          <button class="btn ghost" id="findJobsBtn">Find Jobs</button>
-        </div>
-      </div>
-      <div class="brand">LabourConnect • Demo</div>
+  <nav class="topbar">
+    <div class="brand">LabourConnect</div>
+    <div class="navlinks">
+      <a href="#/" class="navlink" data-link>Home</a>
+      <a href="#/directory" class="navlink" data-link>Directory</a>
     </div>
-  </header>
+  </nav>
 
-  <main class="container">
-    <section class="controls-row" aria-label="Filters">
-      <div class="search">
-        <svg class="icon-xs" viewBox="0 0 24 24"><path d="M21 21L16.65 16.65" stroke="currentColor" stroke-linecap="round" stroke-width="1.6"/></svg>
-        <input id="searchInput" placeholder="Search trade or job (e.g., Electrician)" />
-      </div>
-
-      <div class="city">
-        <svg class="icon-xs" viewBox="0 0 24 24"><path d="M12 21s7-4.35 7-10a7 7 0 10-14 0c0 5.65 7 10 7 10z" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        <input id="cityInput" placeholder="City (e.g., Mumbai)" />
-      </div>
-
-      <select id="radiusSelect" class="radius" title="Radius">
-        <option value="5">5 km</option>
-        <option value="10" selected>10 km</option>
-        <option value="25">25 km</option>
-      </select>
-    </section>
-
-    <section class="section-title">
-      <h2>Browse by Category</h2>
-      <p>Sketch icons, soft cards, and quick filtering. Click a category to include/exclude it.</p>
-    </section>
-
-    <section id="chips" class="chips" aria-label="Category filters"></section>
-
-    <section id="categoryGrid" class="grid" aria-live="polite"></section>
-
-    <section class="dashboard" aria-label="Dashboard lists">
-      <div class="box">
-        <div class="box-head">
-          <h3>Available Workers</h3>
-          <div class="meta-small" id="workersCount">10</div>
-        </div>
-        <div id="workerList" class="list" role="list"></div>
-      </div>
-
-      <div class="box">
-        <div class="box-head">
-          <h3>Customer Job Posts</h3>
-          <div class="meta-small" id="jobsCount">10</div>
-        </div>
-        <div id="jobList" class="list" role="list"></div>
-      </div>
-    </section>
-
-    <footer class="footer">
-      <div>Demo app — original design inspired by modern marketplace patterns (no scraping).</div>
-      <div class="small-muted">Mock payments: using localStorage; WhatsApp uses wa.me links (opens in new tab).</div>
-    </footer>
+  <!-- Main app container. Router will show pages here -->
+  <main id="app">
+    <!-- content injected by script.js -->
   </main>
 
-  <!-- Details modal -->
-  <div id="detailModal" class="modal" aria-hidden="true" role="dialog" aria-modal="true">
-    <div class="modal-content">
-      <button class="modal-close" id="modalClose">&times;</button>
-      <div id="modalBody"></div>
-    </div>
-  </div>
-
-  <!-- Recharge modal -->
-  <div id="rechargeModal" class="modal" aria-hidden="true" role="dialog" aria-modal="true">
-    <div class="modal-content small">
-      <button class="modal-close" id="rechargeClose">&times;</button>
-      <h3>Recharge to Chat</h3>
-      <p>Recharge <strong>₹100</strong> or more to unlock WhatsApp chat with users. (Demo mock payment)</p>
-      <div class="recharge-opts">
-        <button class="btn primary" id="pay100">Pay ₹100 (Mock)</button>
-        <button class="btn" id="pay200">Pay ₹200 (Mock)</button>
-      </div>
-      <div style="margin-top:10px; font-size:13px; color:var(--muted)">After successful payment, you'll be able to open WhatsApp links.</div>
-    </div>
-  </div>
+  <footer class="site-footer">LabourConnect demo — local assets & seed data for quick testing.</footer>
 
   <script src="script.js"></script>
 </body>
