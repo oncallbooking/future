@@ -2,188 +2,217 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>ImagePutter — Single File App</title>
-  <style>
-    /* Simple reset */
-    * { box-sizing: border-box; }
-    body { font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial; margin:0; padding:24px; background:#0f172a; color:#e6eef8; }
-    h1 { font-size:1.6rem; margin:0 0 12px; }
-    .container { max-width:960px; margin:0 auto; }
-    .card { background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01)); border:1px solid rgba(255,255,255,0.04); padding:16px; border-radius:12px; margin-bottom:16px; }
-    .row { display:flex; gap:12px; align-items:center; flex-wrap:wrap; }
-    input[type="file"] { display:block; }
-    button { background:#2563eb; color:white; border:0; padding:8px 12px; border-radius:8px; cursor:pointer; }
-    button:disabled { opacity:0.6; cursor:not-allowed; }
-    .gallery { display:grid; grid-template-columns: repeat(auto-fill, minmax(160px,1fr)); gap:12px; margin-top:12px; }
-    .thumb { position:relative; border-radius:8px; overflow:hidden; background:#071233; border:1px solid rgba(255,255,255,0.03); padding:6px; }
-    .thumb img { width:100%; height:160px; object-fit:cover; display:block; border-radius:6px; }
-    .thumb .meta { margin-top:8px; font-size:12px; color:#9fb2d9; display:flex; justify-content:space-between; align-items:center; gap:8px; }
-    .progress { height:8px; background:rgba(255,255,255,0.05); border-radius:8px; overflow:hidden; margin-top:8px; }
-    .progress > i { display:block; height:100%; width:0%; background:linear-gradient(90deg,#60a5fa,#2563eb); }
-    .notice { font-size:13px; color:#a6b8da; margin-top:10px; }
-    .error { color:#ffb4b4; }
-    footer { text-align:center; margin-top:18px; font-size:13px; color:#93a8d5; }
-    a.link { color:#93c5fd; text-decoration:underline; }
-  </style>
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>FutriFix — Partner Dashboard</title>
+  <meta name="theme-color" content="#071026" />
+  <link rel="stylesheet" href="css/styles.css">
 </head>
-<body>
-  <div class="container">
-    <h1>ImagePutter — Upload & Gallery</h1>
-
-    <div class="card">
-      <div class="row">
-        <input id="fileInput" type="file" accept="image/*" multiple />
-        <button id="uploadBtn">Upload</button>
-        <button id="refreshBtn" title="Refresh gallery">Refresh</button>
+<body data-theme="dark">
+  <div class="page">
+    <!-- HEADER -->
+    <header>
+      <div class="brand">
+        <div class="logo">FF</div>
+        <div>
+          <h1 class="site-title">FutriFix</h1>
+          <p class="muted">EV · Solar · Appliances — Pan-India</p>
+        </div>
       </div>
 
-      <div class="notice">Uploads go to the server's <code>uploads/</code> folder. Server base: <span id="serverBase"></span></div>
-      <div id="status" class="notice"></div>
-    </div>
+      <nav aria-label="Main menu" class="nav">
+        <a href="#home">Home</a>
+        <a href="#services">Services</a>
+        <a href="#branches">Branches</a>
+        <a href="#dashboard">Dashboard</a>
+      </nav>
 
-    <div id="galleryCard" class="card">
-      <h2 style="margin-top:0;margin-bottom:8px;font-size:1.1rem;">Gallery</h2>
-      <div id="gallery" class="gallery"></div>
-      <div id="empty" class="notice">No images yet — upload one!</div>
-    </div>
+      <div class="actions">
+        <div class="play-themes" aria-hidden="false" title="Theme play">
+          <button class="theme-btn theme-green" data-theme="green" aria-label="Green theme"></button>
+          <button class="theme-btn theme-orange" data-theme="orange" aria-label="Orange theme"></button>
+          <button class="theme-btn theme-blue" data-theme="blue" aria-label="Blue theme"></button>
+          <button class="theme-btn theme-light" data-theme="light" aria-label="Light theme"></button>
+          <button class="theme-btn theme-dark" data-theme="dark" aria-label="Dark theme"></button>
+        </div>
+
+        <button class="btn">Quick Login</button>
+        <button class="btn-primary">Post Job</button>
+      </div>
+    </header>
+
+    <!-- HERO / SEARCH / STATS -->
+    <section id="home" class="hero" aria-label="Hero">
+      <div class="hero-left">
+        <h2>Certified technicians across India — book in minutes.</h2>
+        <p class="muted sub">EV, Solar, AC, Refrigerator, Washing machines — local pros with verified profiles and transparent pricing.</p>
+
+        <div class="search-card" role="search">
+          <div class="search-row">
+            <input id="searchInput" placeholder="Enter PIN code (110001) or city (Bengaluru)">
+            <select id="serviceSelect" aria-label="Select service">
+              <option value="">Select Service</option>
+              <option>EV</option>
+              <option>Solar</option>
+              <option>AC</option>
+              <option>Refrigerator</option>
+              <option>Washing Machine</option>
+            </select>
+            <button id="searchBtn" class="search-go">Find</button>
+          </div>
+          <div id="searchResult" class="muted" style="margin-top:8px">Enter location + service to find technicians & branches near you.</div>
+        </div>
+
+        <div class="quick-stats" aria-hidden>
+          <div class="stat">
+            <div class="num">120+</div>
+            <div class="muted">Towns</div>
+          </div>
+          <div class="stat">
+            <div class="num">8k+</div>
+            <div class="muted">Jobs Completed</div>
+          </div>
+          <div class="stat">
+            <div class="num">4.9</div>
+            <div class="muted">Avg Rating</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="hero-right" aria-hidden>
+        <img alt="FutriFix hero" src="https://picsum.photos/seed/futrifixhero/800/600">
+      </div>
+    </section>
+
+    <!-- TWO BOXES: Technicians (left) + Job Bids (right) -->
+    <section id="dashboard" style="margin-top:20px">
+      <div class="two-box-wrap" role="region" aria-label="Technicians and job bids">
+        <div class="panel" id="techPanel">
+          <h2>Available Technicians</h2>
+          <p class="muted hint">Closest & verified — click WhatsApp to chat or tap to view profile</p>
+          <div id="techList"></div>
+        </div>
+
+        <div class="panel" id="jobsPanel">
+          <h2>Customer Job Bids</h2>
+          <p class="muted hint">Open jobs — technicians bid, customers accept the best offer</p>
+          <div id="jobList"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SERVICES -->
+    <section id="services" style="margin-top:28px;">
+      <h3 style="margin-bottom:12px;">Popular Services</h3>
+      <div id="servicesGrid" class="services-grid">
+        <div class="job-card"><b>EV Scooter Repair</b><div class="muted" style="margin-top:6px">Fast pickup & repair</div></div>
+        <div class="job-card"><b>Solar Panel Service</b><div class="muted" style="margin-top:6px">Cleaning & inverter checks</div></div>
+        <div class="job-card"><b>AC Service</b><div class="muted" style="margin-top:6px">Gas top-up & cleaning</div></div>
+        <div class="job-card"><b>Refrigerator Repair</b><div class="muted" style="margin-top:6px">Compressor & gas works</div></div>
+      </div>
+    </section>
+
+    <!-- BRANCHES -->
+    <section id="branches" style="margin-top:28px;">
+      <h3 style="margin-bottom:12px;">Branch Network</h3>
+      <div id="branchList" class="services-grid">
+        <div class="job-card"><b>Bengaluru</b><div class="muted">41 Technicians</div></div>
+        <div class="job-card"><b>Mumbai</b><div class="muted">39 Technicians</div></div>
+        <div class="job-card"><b>Hyderabad</b><div class="muted">32 Technicians</div></div>
+        <div class="job-card"><b>Delhi</b><div class="muted">46 Technicians</div></div>
+      </div>
+      <div class="muted" style="margin-top:12px">Don't see your area? <a href="#contact" class="link">Request service</a></div>
+    </section>
 
     <footer>
-      Running from local server — open <span id="openUrl"></span> in your browser.<br/>
-      (Original project reference: <code>/mnt/data/ImagePutter_unzipped/ImagePutter</code>)
+      <div>© FutriFix 2025 • Built for Indian neighborhoods</div>
+      <div class="muted">Made with ❤️ — FutriFix</div>
     </footer>
   </div>
 
-<script>
-(() => {
-  // Base URL (same origin). Adjust if server runs on a different port.
-  const base = ''; // empty => same origin
-  document.getElementById('serverBase').textContent = window.location.origin + base;
-  document.getElementById('openUrl').textContent = window.location.origin + '/';
+  <!-- Minimal JS: mock data + theme switching -->
+  <script>
+    /* ---------- theme switching ---------- */
+    document.querySelectorAll('.theme-btn').forEach(btn=>{
+      btn.addEventListener('click', () => {
+        const theme = btn.getAttribute('data-theme') || 'dark';
+        document.body.setAttribute('data-theme', theme);
 
-  const fileInput = document.getElementById('fileInput');
-  const uploadBtn = document.getElementById('uploadBtn');
-  const refreshBtn = document.getElementById('refreshBtn');
-  const status = document.getElementById('status');
-  const galleryEl = document.getElementById('gallery');
-  const empty = document.getElementById('empty');
-
-  function showStatus(text, isError=false){
-    status.textContent = text;
-    status.className = isError ? 'notice error' : 'notice';
-  }
-
-  async function listImages(){
-    try{
-      const res = await fetch('/images');
-      if(!res.ok) throw new Error('Failed to fetch images');
-      const json = await res.json();
-      renderGallery(json);
-    } catch(err){
-      showStatus('Could not load gallery: ' + err.message, true);
-    }
-  }
-
-  function renderGallery(items){
-    galleryEl.innerHTML = '';
-    if(!items || items.length === 0){
-      empty.style.display = 'block';
-      return;
-    } else {
-      empty.style.display = 'none';
-    }
-    items.forEach(item => {
-      const div = document.createElement('div');
-      div.className = 'thumb';
-
-      const img = document.createElement('img');
-      img.src = item.url;
-      img.alt = item.name;
-
-      const meta = document.createElement('div');
-      meta.className = 'meta';
-      const nm = document.createElement('div');
-      nm.textContent = item.name;
-      const dt = document.createElement('div');
-      const d = new Date(item.uploadedAt || item.mtime || Date.now());
-      dt.textContent = d.toLocaleString();
-
-      meta.appendChild(nm);
-      meta.appendChild(dt);
-
-      div.appendChild(img);
-      div.appendChild(meta);
-      galleryEl.appendChild(div);
+        // visual press feedback: add transient class
+        btn.classList.add('pressed');
+        setTimeout(()=> btn.classList.remove('pressed'), 220);
+      });
     });
-  }
 
-  async function uploadFiles(files){
-    if(!files || files.length === 0){
-      showStatus('Pick one or more image files first.', true);
-      return;
+    /* ---------- mock rendering (kept small) ---------- */
+    const technicians = [
+      {id:1, name:'Rohit Sharma', initials:'RS', skill:'EV Scooter Expert', exp:'5 yrs', rating:4.9, price:199, phone:'912345678901'},
+      {id:2, name:'Imran Khan', initials:'IK', skill:'Solar / Battery', exp:'6 yrs', rating:4.8, price:249, phone:'919876543210'},
+      {id:3, name:'Rahul Verma', initials:'RV', skill:'AC Specialist', exp:'8 yrs', rating:5.0, price:299, phone:'919998887776'}
+    ];
+    const jobs = [
+      {id:101, title:'EV Scooter not charging', customer:'Asha R.', location:'PIN 560076', range:'₹350–500', bidders:[
+        {tech:'Rohit Sharma', price:430},{tech:'Imran Khan', price:420}
+      ]},
+      {id:102, title:'AC not cooling', customer:'Vikram S.', location:'PIN 400001', range:'₹600–900', bidders:[
+        {tech:'Rahul Verma', price:700}
+      ]}
+    ];
+
+    function renderTechs() {
+      const list = document.getElementById('techList');
+      list.innerHTML = '';
+      technicians.forEach(t => {
+        const el = document.createElement('div');
+        el.className = 'tech-card';
+        el.innerHTML = `
+          <div class="avatar">${t.initials}</div>
+          <div class="tech-main">
+            <b>${t.name}</b>
+            <div class="tech-sub">${t.skill} • <span class="muted">${t.exp}</span></div>
+            <div class="tech-meta">
+              <div class="chip">Base ₹${t.price}</div>
+              <div class="chip">${t.skill.split('/')[0].trim()}</div>
+            </div>
+          </div>
+          <div class="tech-actions">
+            <div class="rating">${t.rating}</div>
+            <a class="whatsapp-link" href="https://wa.me/${t.phone}" target="_blank" rel="noopener">
+              <button class="whatsapp-btn">WhatsApp</button>
+            </a>
+          </div>
+        `;
+        list.appendChild(el);
+      });
     }
-    uploadBtn.disabled = true;
-    showStatus('Uploading...');
-    try {
-      // If multiple files, upload them sequentially (keeps UX predictable)
-      for(let i=0;i<files.length;i++){
-        const f = files[i];
-        const fd = new FormData();
-        fd.append('image', f, f.name);
 
-        // create progress indicator
-        const container = document.createElement('div');
-        container.className = 'card';
-        container.style.marginBottom = '8px';
-        const pname = document.createElement('div'); pname.textContent = 'Uploading ' + f.name;
-        const prog = document.createElement('div'); prog.className = 'progress'; const bar = document.createElement('i'); prog.appendChild(bar);
-        container.appendChild(pname); container.appendChild(prog);
-        document.body.insertBefore(container, document.querySelector('.container').nextSibling);
-
-        // Use XMLHttpRequest to show progress
-        await new Promise((resolve, reject) => {
-          const xhr = new XMLHttpRequest();
-          xhr.open('POST', '/upload', true);
-          xhr.upload.onprogress = (ev) => {
-            if(ev.lengthComputable){
-              const pct = Math.round((ev.loaded/ev.total)*100);
-              bar.style.width = pct + '%';
-            }
-          };
-          xhr.onload = () => {
-            if(xhr.status >= 200 && xhr.status < 300) {
-              bar.style.width = '100%';
-              setTimeout(()=> container.remove(), 400);
-              resolve();
-            } else {
-              container.remove();
-              reject(new Error('Upload failed: ' + xhr.statusText));
-            }
-          };
-          xhr.onerror = () => { container.remove(); reject(new Error('Network error')); };
-          xhr.send(fd);
-        });
-      }
-      showStatus('Upload complete. Refreshing gallery...');
-      await listImages();
-      setTimeout(()=> showStatus(''), 1600);
-    } catch(err){
-      showStatus('Upload error: ' + err.message, true);
-    } finally {
-      uploadBtn.disabled = false;
+    function renderJobs() {
+      const list = document.getElementById('jobList');
+      list.innerHTML = '';
+      jobs.forEach(job => {
+        const j = document.createElement('div');
+        j.className = 'job-card';
+        j.innerHTML = `
+          <div class="job-top">
+            <div style="flex:1">
+              <div class="job-title"><b>${job.title}</b></div>
+              <div class="job-meta">
+                <span class="muted">${job.customer}</span>
+                <span class="muted">•</span>
+                <span class="muted">${job.location}</span>
+              </div>
+            </div>
+            <div style="display:flex;flex-direction:column;align-items:flex-end;gap:8px">
+              <div class="price-tag">${job.range}</div>
+              <button class="bid-btn">${job.bidders.length} Bids</button>
+            </div>
+          </div>
+        `;
+        list.appendChild(j);
+      });
     }
-  }
 
-  // wire events
-  uploadBtn.addEventListener('click', () => {
-    uploadFiles(fileInput.files);
-  });
-  refreshBtn.addEventListener('click', listImages);
-
-  // initial load
-  listImages();
-
-})();
-</script>
+    renderTechs();
+    renderJobs();
+  </script>
 </body>
 </html>
