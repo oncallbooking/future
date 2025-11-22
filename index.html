@@ -1,83 +1,189 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8"/>
-  <meta name="viewport" content="width=device-width,initial-scale=1"/>
-  <title>FutriFix — Find Technicians Near You</title>
-
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
-  <link rel="stylesheet" href="css/styles.css"/>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>ImagePutter — Single File App</title>
+  <style>
+    /* Simple reset */
+    * { box-sizing: border-box; }
+    body { font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial; margin:0; padding:24px; background:#0f172a; color:#e6eef8; }
+    h1 { font-size:1.6rem; margin:0 0 12px; }
+    .container { max-width:960px; margin:0 auto; }
+    .card { background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01)); border:1px solid rgba(255,255,255,0.04); padding:16px; border-radius:12px; margin-bottom:16px; }
+    .row { display:flex; gap:12px; align-items:center; flex-wrap:wrap; }
+    input[type="file"] { display:block; }
+    button { background:#2563eb; color:white; border:0; padding:8px 12px; border-radius:8px; cursor:pointer; }
+    button:disabled { opacity:0.6; cursor:not-allowed; }
+    .gallery { display:grid; grid-template-columns: repeat(auto-fill, minmax(160px,1fr)); gap:12px; margin-top:12px; }
+    .thumb { position:relative; border-radius:8px; overflow:hidden; background:#071233; border:1px solid rgba(255,255,255,0.03); padding:6px; }
+    .thumb img { width:100%; height:160px; object-fit:cover; display:block; border-radius:6px; }
+    .thumb .meta { margin-top:8px; font-size:12px; color:#9fb2d9; display:flex; justify-content:space-between; align-items:center; gap:8px; }
+    .progress { height:8px; background:rgba(255,255,255,0.05); border-radius:8px; overflow:hidden; margin-top:8px; }
+    .progress > i { display:block; height:100%; width:0%; background:linear-gradient(90deg,#60a5fa,#2563eb); }
+    .notice { font-size:13px; color:#a6b8da; margin-top:10px; }
+    .error { color:#ffb4b4; }
+    footer { text-align:center; margin-top:18px; font-size:13px; color:#93a8d5; }
+    a.link { color:#93c5fd; text-decoration:underline; }
+  </style>
 </head>
 <body>
-  <header class="site-header">
-    <div class="container header-inner">
-      <div class="brand">FutriFix</div>
-      <nav>
-        <a href="index.html">Home</a>
-        <a href="signup-tech.html">Become a Tech</a>
-        <a href="client-post.html">Post a Job</a>
-        <a href="dashboard.html">Dashboard</a>
-      </nav>
-      <div class="actions">
-        <button id="demoSeedBtn" class="btn small">Seed Demo Data</button>
+  <div class="container">
+    <h1>ImagePutter — Upload & Gallery</h1>
+
+    <div class="card">
+      <div class="row">
+        <input id="fileInput" type="file" accept="image/*" multiple />
+        <button id="uploadBtn">Upload</button>
+        <button id="refreshBtn" title="Refresh gallery">Refresh</button>
       </div>
+
+      <div class="notice">Uploads go to the server's <code>uploads/</code> folder. Server base: <span id="serverBase"></span></div>
+      <div id="status" class="notice"></div>
     </div>
-  </header>
 
-  <main class="container">
-    <section class="hero">
-      <div class="hero-left">
-        <h1>Find trusted technicians near you</h1>
-        <p class="muted">Search by service and location. See technician rates, experience and bids from local technicians.</p>
-        <div class="search-row">
-          <input id="serviceInput" placeholder="What service do you need? e.g. AC Repair" />
-          <input id="locationInput" placeholder="Enter PIN code or city" />
-          <button id="searchBtn" class="btn-primary">Search</button>
-        </div>
-        <div id="searchMsg" class="muted" style="margin-top:10px"></div>
-      </div>
+    <div id="galleryCard" class="card">
+      <h2 style="margin-top:0;margin-bottom:8px;font-size:1.1rem;">Gallery</h2>
+      <div id="gallery" class="gallery"></div>
+      <div id="empty" class="notice">No images yet — upload one!</div>
+    </div>
 
-      <div class="hero-right">
-        <img src="images/preview.png" alt="preview" style="width:100%;border-radius:10px;filter:contrast(0.95)"/>
-      </div>
-    </section>
+    <footer>
+      Running from local server — open <span id="openUrl"></span> in your browser.<br/>
+      (Original project reference: <code>/mnt/data/ImagePutter_unzipped/ImagePutter</code>)
+    </footer>
+  </div>
 
-    <section class="categories">
-      <h2>Popular Services</h2>
-      <div class="cat-grid">
-        <button class="cat" data-service="EV Repair">🔌 EV Repair</button>
-        <button class="cat" data-service="Solar Service">🔆 Solar Service</button>
-        <button class="cat" data-service="AC Repair">❄️ AC Repair</button>
-        <button class="cat" data-service="Washing Machine">🧺 Washing Machine</button>
-        <button class="cat" data-service="Geyser Repair">🔥 Geyser Repair</button>
-        <button class="cat" data-service="CCTV">📡 CCTV Installation</button>
-        <button class="cat" data-service="E-bike Service">🛵 E-bike Service</button>
-        <button class="cat" data-service="Appliance Installation">⚒️ Appliance Installation</button>
-      </div>
-    </section>
+<script>
+(() => {
+  // Base URL (same origin). Adjust if server runs on a different port.
+  const base = ''; // empty => same origin
+  document.getElementById('serverBase').textContent = window.location.origin + base;
+  document.getElementById('openUrl').textContent = window.location.origin + '/';
 
-    <section class="results">
-      <h2>Technicians & Bids</h2>
-      <div class="layout-split">
-        <div style="flex:1;min-width:360px;">
-          <div id="techList" class="list"></div>
-        </div>
-        <div style="flex:1;min-width:360px;">
-          <div id="map" style="height:520px;border-radius:8px;overflow:hidden;border:1px solid rgba(0,0,0,0.06)"></div>
-          <div style="margin-top:12px">
-            <h3>Open Jobs (clients)</h3>
-            <div id="jobFeed"></div>
-          </div>
-        </div>
-      </div>
-    </section>
-  </main>
+  const fileInput = document.getElementById('fileInput');
+  const uploadBtn = document.getElementById('uploadBtn');
+  const refreshBtn = document.getElementById('refreshBtn');
+  const status = document.getElementById('status');
+  const galleryEl = document.getElementById('gallery');
+  const empty = document.getElementById('empty');
 
-  <footer class="site-footer">
-    <div class="container">© FutriFix 2025 — Built for India · Prototype</div>
-  </footer>
+  function showStatus(text, isError=false){
+    status.textContent = text;
+    status.className = isError ? 'notice error' : 'notice';
+  }
 
-  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-  <script type="module" src="js/main.js"></script>
+  async function listImages(){
+    try{
+      const res = await fetch('/images');
+      if(!res.ok) throw new Error('Failed to fetch images');
+      const json = await res.json();
+      renderGallery(json);
+    } catch(err){
+      showStatus('Could not load gallery: ' + err.message, true);
+    }
+  }
+
+  function renderGallery(items){
+    galleryEl.innerHTML = '';
+    if(!items || items.length === 0){
+      empty.style.display = 'block';
+      return;
+    } else {
+      empty.style.display = 'none';
+    }
+    items.forEach(item => {
+      const div = document.createElement('div');
+      div.className = 'thumb';
+
+      const img = document.createElement('img');
+      img.src = item.url;
+      img.alt = item.name;
+
+      const meta = document.createElement('div');
+      meta.className = 'meta';
+      const nm = document.createElement('div');
+      nm.textContent = item.name;
+      const dt = document.createElement('div');
+      const d = new Date(item.uploadedAt || item.mtime || Date.now());
+      dt.textContent = d.toLocaleString();
+
+      meta.appendChild(nm);
+      meta.appendChild(dt);
+
+      div.appendChild(img);
+      div.appendChild(meta);
+      galleryEl.appendChild(div);
+    });
+  }
+
+  async function uploadFiles(files){
+    if(!files || files.length === 0){
+      showStatus('Pick one or more image files first.', true);
+      return;
+    }
+    uploadBtn.disabled = true;
+    showStatus('Uploading...');
+    try {
+      // If multiple files, upload them sequentially (keeps UX predictable)
+      for(let i=0;i<files.length;i++){
+        const f = files[i];
+        const fd = new FormData();
+        fd.append('image', f, f.name);
+
+        // create progress indicator
+        const container = document.createElement('div');
+        container.className = 'card';
+        container.style.marginBottom = '8px';
+        const pname = document.createElement('div'); pname.textContent = 'Uploading ' + f.name;
+        const prog = document.createElement('div'); prog.className = 'progress'; const bar = document.createElement('i'); prog.appendChild(bar);
+        container.appendChild(pname); container.appendChild(prog);
+        document.body.insertBefore(container, document.querySelector('.container').nextSibling);
+
+        // Use XMLHttpRequest to show progress
+        await new Promise((resolve, reject) => {
+          const xhr = new XMLHttpRequest();
+          xhr.open('POST', '/upload', true);
+          xhr.upload.onprogress = (ev) => {
+            if(ev.lengthComputable){
+              const pct = Math.round((ev.loaded/ev.total)*100);
+              bar.style.width = pct + '%';
+            }
+          };
+          xhr.onload = () => {
+            if(xhr.status >= 200 && xhr.status < 300) {
+              bar.style.width = '100%';
+              setTimeout(()=> container.remove(), 400);
+              resolve();
+            } else {
+              container.remove();
+              reject(new Error('Upload failed: ' + xhr.statusText));
+            }
+          };
+          xhr.onerror = () => { container.remove(); reject(new Error('Network error')); };
+          xhr.send(fd);
+        });
+      }
+      showStatus('Upload complete. Refreshing gallery...');
+      await listImages();
+      setTimeout(()=> showStatus(''), 1600);
+    } catch(err){
+      showStatus('Upload error: ' + err.message, true);
+    } finally {
+      uploadBtn.disabled = false;
+    }
+  }
+
+  // wire events
+  uploadBtn.addEventListener('click', () => {
+    uploadFiles(fileInput.files);
+  });
+  refreshBtn.addEventListener('click', listImages);
+
+  // initial load
+  listImages();
+
+})();
+</script>
 </body>
 </html>
