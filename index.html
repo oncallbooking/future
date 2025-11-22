@@ -3,25 +3,76 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>LabourConnect — Demo Directory & Dashboard</title>
+  <title>LabourConnect — Home</title>
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-  <nav class="topbar">
+  <!-- top nav -->
+  <header class="topbar">
     <div class="brand">LabourConnect</div>
-    <div class="navlinks">
-      <a href="#/" class="navlink" data-link>Home</a>
-      <a href="#/directory" class="navlink" data-link>Directory</a>
-    </div>
-  </nav>
+    <nav class="nav">
+      <a href="index.html" class="navlink active">Home</a>
+      <a href="categories.html" class="navlink">Categories</a>
+      <a href="workers.html" class="navlink">Workers</a>
+      <a href="jobs.html" class="navlink">Jobs</a>
+    </nav>
+  </header>
 
-  <!-- Main app container. Router will show pages here -->
-  <main id="app">
-    <!-- content injected by script.js -->
+  <!-- hero -->
+  <section class="hero">
+    <div class="hero-inner">
+      <div class="hero-left">
+        <h1>Find Skilled Workers for Any Job</h1>
+        <p class="lead">Connect with verified technicians across trades. Post jobs or find local workers quickly.</p>
+        <div class="hero-cta">
+          <a class="btn" href="workers.html">Find Workers</a>
+          <a class="btn ghost" href="jobs.html">Find Jobs</a>
+        </div>
+      </div>
+      <div class="hero-right">
+        <div class="stats">
+          <div><strong>10K+</strong><span>Jobs posted</span></div>
+          <div><strong>5K+</strong><span>Active workers</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <main class="container">
+    <section>
+      <h2 class="section-title">Browse by Category</h2>
+      <p class="section-sub">Find skilled labour across trades and industries</p>
+
+      <div id="categoryTiles" class="grid tiles-grid"></div>
+    </section>
+
+    <section class="mini-features">
+      <div class="feature">
+        <h3>No subscription cost</h3>
+        <p>Join free — control pricing and accept jobs you want.</p>
+      </div>
+      <div class="feature">
+        <h3>High intent customers</h3>
+        <p>Customers search and directly contact pros — high conversion.</p>
+      </div>
+      <div class="feature">
+        <h3>Control & insights</h3>
+        <p>Simple dashboard and listing controls for pros and hirers.</p>
+      </div>
+    </section>
   </main>
 
-  <footer class="site-footer">LabourConnect demo — local assets & seed data for quick testing.</footer>
+  <footer class="site-footer">
+    <div>LabourConnect demo — thumbtack-like UI (demo assets)</div>
+    <div><a href="README.md">How to run</a></div>
+  </footer>
 
-  <script src="script.js"></script>
+  <script src="icons.svg" type="image/svg+xml"></script>
+  <script src="data.js"></script>
+  <script src="app.js"></script>
+  <script>
+    // init home category tiles
+    renderCategoryTiles(document.getElementById('categoryTiles'), categories);
+  </script>
 </body>
 </html>
