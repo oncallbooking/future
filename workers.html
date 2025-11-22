@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>LabourConnect — Workers</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">LabourConnect</div>
+    <nav class="nav">
+      <a href="index.html" class="navlink">Home</a>
+      <a href="categories.html" class="navlink">Categories</a>
+      <a href="workers.html" class="navlink active">Workers</a>
+      <a href="jobs.html" class="navlink">Jobs</a>
+    </nav>
+  </header>
+
+  <main class="container two-col">
+    <aside class="sidebar">
+      <div class="filter-block">
+        <label>Search</label>
+        <input id="workerSearch" placeholder="Search by trade or name" />
+      </div>
+
+      <div class="filter-block">
+        <label>City</label>
+        <input id="workerCity" placeholder="e.g., Mumbai" />
+      </div>
+
+      <div class="filter-block">
+        <label>Radius</label>
+        <select id="workerRadius">
+          <option value="5">5 km</option>
+          <option value="10" selected>10 km</option>
+          <option value="25">25 km</option>
+        </select>
+      </div>
+
+      <div class="filter-block">
+        <label>Categories</label>
+        <div id="categoryChips" class="chips"></div>
+      </div>
+    </aside>
+
+    <section class="content">
+      <div class="box">
+        <h3>Available Workers</h3>
+        <div id="workerList" class="list"></div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">LabourConnect demo</footer>
+
+  <script src="icons.svg" type="image/svg+xml"></script>
+  <script src="data.js"></script>
+  <script src="app.js"></script>
+  <script>
+    // build chips and wire filtering
+    createChips(document.getElementById('categoryChips'));
+    function applyWorkerFilters(){ renderWorkers(document.getElementById('workerList'), demoWorkers, getActiveFilters()); }
+    document.getElementById('workerSearch').addEventListener('input', applyWorkerFilters);
+    document.getElementById('workerCity').addEventListener('input', applyWorkerFilters);
+    document.getElementById('workerRadius').addEventListener('change', applyWorkerFilters);
+    document.addEventListener('chip-change', applyWorkerFilters);
+    // initial list
+    applyWorkerFilters();
+  </script>
+</body>
+</html>
