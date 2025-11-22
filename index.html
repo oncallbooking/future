@@ -39,13 +39,37 @@
   </section>
 
   <main class="container">
+
+    <!-- CATEGORY SECTION -->
     <section>
       <h2 class="section-title">Browse by Category</h2>
       <p class="section-sub">Find skilled labour across trades and industries</p>
-
       <div id="categoryTiles" class="grid tiles-grid"></div>
     </section>
 
+    <!-- 🟦 DASHBOARD SECTION ADDED HERE -->
+    <section id="dashboard" style="margin-top:40px;">
+      <h2 class="section-title">Live Technicians & Job Bidding</h2>
+      <div class="two-box-wrap two-box-scroll" role="region" aria-label="Technicians and job bids">
+
+        <!-- AVAILABLE TECHNICIANS -->
+        <div class="panel" id="techPanel">
+          <h2>Available Technicians</h2>
+          <p class="muted" style="margin-top:6px; margin-bottom:12px;">Closest & verified — tap WhatsApp or open profile</p>
+          <div id="techList"></div>
+        </div>
+
+        <!-- BIDDING JOBS -->
+        <div class="panel" id="jobsPanel">
+          <h2>Customer Job Bids</h2>
+          <p class="muted" style="margin-top:6px; margin-bottom:12px;">Open jobs — technicians bid, customers accept</p>
+          <div id="jobList"></div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- FEATURES -->
     <section class="mini-features">
       <div class="feature">
         <h3>No subscription cost</h3>
@@ -67,12 +91,78 @@
     <div><a href="README.md">How to run</a></div>
   </footer>
 
+  <!-- scripts -->
   <script src="icons.svg" type="image/svg+xml"></script>
   <script src="data.js"></script>
   <script src="app.js"></script>
+
   <script>
-    // init home category tiles
-    renderCategoryTiles(document.getElementById('categoryTiles'), categories);
+    // FIX: correct call for category tiles
+    renderCategoryTiles(document.getElementById('categoryTiles'));
+
+    // FIX: load live technicians
+    function loadLiveTechs() {
+      const box = document.getElementById("techList");
+      box.innerHTML = "";
+      demoWorkers.forEach(w => {
+        box.innerHTML += `
+          <div class="tech-card">
+            <div class="avatar">${w.name.slice(0,2).toUpperCase()}</div>
+            <div class="tech-main">
+              <b>${w.name}</b>
+              <div class="tech-sub">${w.trade} • <span class="muted">${w.experience} yrs</span></div>
+              <div class="tech-meta">
+                <div class="chip">₹${w.pricePerDay}</div>
+                <div class="chip">${w.trade}</div>
+              </div>
+            </div>
+            <div style="display:flex;flex-direction:column;align-items:flex-end;gap:8px;">
+              <div class="rating">4.8</div>
+              <a class="whatsapp-link" href="https://wa.me/91${w.phone}?text=Hi%20${w.name},%20I%20need%20your%20service" target="_blank">
+                <button class="whatsapp-btn">WhatsApp</button>
+              </a>
+            </div>
+          </div>`;
+      });
+    }
+
+    // FIX: load job bids
+    function loadLiveJobs() {
+      const box = document.getElementById("jobList");
+      box.innerHTML = "";
+      demoJobs.forEach((j,i) => {
+        box.innerHTML += `
+          <div class="job-card">
+            <div class="job-top">
+              <div style="flex:1;">
+                <div class="job-title"><b>${j.title}</b></div>
+                <div class="job-meta">
+                  <span class="muted">${j.city}</span>
+                </div>
+              </div>
+              <div style="display:flex;flex-direction:column;align-items:flex-end;gap:8px">
+                <div class="price-tag">₹${j.budget}</div>
+                <button class="bid-btn" onclick="toggleBids(${i})">${Math.ceil(Math.random()*3)} Bids</button>
+              </div>
+            </div>
+
+            <div id="bidders-${i}" class="bidders-list" aria-hidden="true"></div>
+          </div>`;
+      });
+    }
+
+    function toggleBids(i) {
+      const box = document.getElementById('bidders-'+i);
+      box.style.display = box.style.display === 'block' ? 'none' : 'block';
+      box.innerHTML = `
+        <div class="bid-row"><div>Amit Sharma</div><button class="accept-btn">Accept</button></div>
+        <div class="bid-row"><div>Imran Khan</div><button class="accept-btn">Accept</button></div>
+      `;
+    }
+
+    loadLiveTechs();
+    loadLiveJobs();
   </script>
+
 </body>
 </html>
