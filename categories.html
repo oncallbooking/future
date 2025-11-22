@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>LabourConnect — Categories</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">LabourConnect</div>
+    <nav class="nav">
+      <a href="index.html" class="navlink">Home</a>
+      <a href="categories.html" class="navlink active">Categories</a>
+      <a href="workers.html" class="navlink">Workers</a>
+      <a href="jobs.html" class="navlink">Jobs</a>
+    </nav>
+  </header>
+
+  <main class="container">
+    <section class="hero-mini">
+      <h1>All Categories</h1>
+      <p class="section-sub">Tap a category to browse workers & jobs in that trade.</p>
+    </section>
+
+    <section>
+      <div id="categoryTilesLarge" class="grid tiles-grid large"></div>
+    </section>
+  </main>
+
+  <footer class="site-footer">LabourConnect demo</footer>
+
+  <script src="icons.svg" type="image/svg+xml"></script>
+  <script src="data.js"></script>
+  <script src="app.js"></script>
+  <script>
+    renderCategoryTiles(document.getElementById('categoryTilesLarge'), categories, {large:true});
+  </script>
+</body>
+</html>
