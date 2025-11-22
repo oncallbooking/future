@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Dashboard — LabourConnect</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">LabourConnect</div>
+    <nav class="nav">
+      <a href="index.html" class="navlink">Home</a>
+      <a href="categories.html" class="navlink">Categories</a>
+      <a href="workers.html" class="navlink">Workers</a>
+      <a href="jobs.html" class="navlink">Jobs</a>
+      <a href="dashboard.html" class="navlink active">Dashboard</a>
+    </nav>
+  </header>
+
+  <main class="container">
+    <div style="display:flex; gap:16px; align-items:flex-start; flex-wrap:wrap;">
+      <div class="box" style="flex:1; min-width:320px;">
+        <h3>Available Technicians</h3>
+        <div id="dashTechList" class="list"></div>
+      </div>
+
+      <div class="box" style="flex:1; min-width:320px;">
+        <h3>Available Jobs</h3>
+        <div id="dashJobList" class="list"></div>
+      </div>
+    </div>
+
+    <div style="margin-top:16px; display:flex; gap:10px; justify-content:flex-end;">
+      <a href="create-technician.html" class="btn">Create Technician</a>
+      <a href="post-job.html" class="btn ghost">Post Job</a>
+    </div>
+  </main>
+
+  <footer class="site-footer">LabourConnect demo</footer>
+
+  <script src="icons.svg" type="image/svg+xml"></script>
+  <script src="data.js"></script>
+  <script src="app.js"></script>
+  <script>
+    // Render lists
+    function renderDashboardLists(){
+      renderWorkers(document.getElementById('dashTechList'), demoWorkers, {});
+      renderJobs(document.getElementById('dashJobList'), demoJobs, {});
+    }
+    // ensure data loaded then render
+    window.addEventListener('load', () => {
+      renderDashboardLists();
+      // show a subscription prompt once per session (demo)
+      setTimeout(() => {
+        showSubscriptionPopup({ title: 'Unlock Pro features', body: 'Subscribe to unlock unlimited job postings, priority leads and advanced filtering.' });
+      }, 900);
+    });
+
+    // Re-render when data updates (app.js will dispatch 'data-updated')
+    document.addEventListener('data-updated', renderDashboardLists);
+  </script>
+</body>
+</html>
