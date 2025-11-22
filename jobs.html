@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>LabourConnect — Jobs</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">LabourConnect</div>
+    <nav class="nav">
+      <a href="index.html" class="navlink">Home</a>
+      <a href="categories.html" class="navlink">Categories</a>
+      <a href="workers.html" class="navlink">Workers</a>
+      <a href="jobs.html" class="navlink active">Jobs</a>
+    </nav>
+  </header>
+
+  <main class="container two-col">
+    <aside class="sidebar">
+      <div class="filter-block">
+        <label>Search</label>
+        <input id="jobSearch" placeholder="Search by title or category" />
+      </div>
+
+      <div class="filter-block">
+        <label>City</label>
+        <input id="jobCity" placeholder="e.g., Mumbai" />
+      </div>
+
+      <div class="filter-block">
+        <label>Budget up to</label>
+        <input id="jobBudget" type="number" placeholder="e.g., 5000" />
+      </div>
+
+      <div class="filter-block">
+        <label>Categories</label>
+        <div id="categoryChipsJobs" class="chips"></div>
+      </div>
+    </aside>
+
+    <section class="content">
+      <div class="box">
+        <h3>Job Posts</h3>
+        <div id="jobList" class="list"></div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">LabourConnect demo</footer>
+
+  <script src="icons.svg" type="image/svg+xml"></script>
+  <script src="data.js"></script>
+  <script src="app.js"></script>
+  <script>
+    createChips(document.getElementById('categoryChipsJobs'));
+    function applyJobFilters(){ renderJobs(document.getElementById('jobList'), demoJobs, getActiveFilters()); }
+    document.getElementById('jobSearch').addEventListener('input', applyJobFilters);
+    document.getElementById('jobCity').addEventListener('input', applyJobFilters);
+    document.getElementById('jobBudget').addEventListener('input', applyJobFilters);
+    document.addEventListener('chip-change', applyJobFilters);
+    applyJobFilters();
+  </script>
+</body>
+</html>
